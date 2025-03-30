@@ -18,22 +18,27 @@ def analyze_health_data(filename='health_data.csv'):
     anomalies = data[data['anomaly'] == -1]
     
     # Step 3: Generate Summary
+    heart_rate_stats = data["heart_rate"].agg(['mean', 'min', 'max'])
+    oxygen_level_stats = data["oxygen_level"].agg(['mean', 'min', 'max'])
+    systolic_bp_stats = data["systolic_bp"].agg(['mean', 'min', 'max'])
+    diastolic_bp_stats = data["diastolic_bp"].agg(['mean', 'min', 'max'])
+
     summary = {
-        "heart_rate_avg": data["heart_rate"].mean(),
-        "heart_rate_min": data["heart_rate"].min(),
-        "heart_rate_max": data["heart_rate"].max(),
-        "oxygen_level_avg": data["oxygen_level"].mean(),
-        "oxygen_level_min": data["oxygen_level"].min(),
-        "oxygen_level_max": data["oxygen_level"].max(),
-        "systolic_bp_avg": data["systolic_bp"].mean(),
-        "systolic_bp_min": data["systolic_bp"].min(),
-        "systolic_bp_max": data["systolic_bp"].max(),
-        "diastolic_bp_avg": data["diastolic_bp"].mean(),
-        "diastolic_bp_min": data["diastolic_bp"].min(),
-        "diastolic_bp_max": data["diastolic_bp"].max(),
-        "total_anomalies": len(anomalies),
-        "anomaly_instances": anomalies[['timestamp', 'heart_rate', 'oxygen_level', 'systolic_bp', 'diastolic_bp']].values.tolist()
-    }
+    "heart_rate_avg": heart_rate_stats['mean'],
+    "heart_rate_min": heart_rate_stats['min'],
+    "heart_rate_max": heart_rate_stats['max'],
+    "oxygen_level_avg": oxygen_level_stats['mean'],
+    "oxygen_level_min": oxygen_level_stats['min'],
+    "oxygen_level_max": oxygen_level_stats['max'],
+    "systolic_bp_avg": systolic_bp_stats['mean'],
+    "systolic_bp_min": systolic_bp_stats['min'],
+    "systolic_bp_max": systolic_bp_stats['max'],
+    "diastolic_bp_avg": diastolic_bp_stats['mean'],
+    "diastolic_bp_min": diastolic_bp_stats['min'],
+    "diastolic_bp_max": diastolic_bp_stats['max'],
+    "total_anomalies": len(anomalies),
+    "anomaly_instances": anomalies[['timestamp', 'heart_rate', 'oxygen_level', 'systolic_bp', 'diastolic_bp']].values.tolist()
+}
 
     # Display Summary
     print("Health Data Summary:")
